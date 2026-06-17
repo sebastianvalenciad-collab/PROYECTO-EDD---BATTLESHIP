@@ -2,6 +2,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct{
+    int matriz[N][N];
+} Mapa;
+
+typedef struct{
+    int ancho;
+    int largo;
+    int posX;
+    int posY;
+    int vida;
+} TipoBarco;
+
+typedef struct{
+    int x;
+    int y;
+    int resultado;
+} Accion;
+
+typedef struct{
+    int id;
+    Mapa tablero;
+    TipoBarco barcos[MAX_BARCOS];
+    int cantidadBarcos;
+    int vidaTotal;
+    List *historial;
+} TipoJugador;
 // --- COMANDOS COMPILACION BASH ---
 // gcc main.c -Werror -o main
 // ./main

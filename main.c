@@ -2,6 +2,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define N 10
+#define MAX_BARCOS 5
+
+typedef struct Node {
+    int x;
+    int y;
+    int resultado;
+    struct Node *next;
+} Node;
+
+typedef Node* List;
+
 typedef struct{
     int matriz[N][N];
 } Mapa;
@@ -58,8 +70,7 @@ int main(){
         option = getchar();
 
         switch (option) {
-        case 'E': //TODO -> ENCONTRRAR FORMA DE QUE C 
-                  // leea la tecla enter (no pude con '\n')
+        case 'E':
             system("clear");
             puts("EMPEZAR______");
             break;

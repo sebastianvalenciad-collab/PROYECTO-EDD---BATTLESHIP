@@ -24,7 +24,6 @@ typedef struct{
     int id;
     Mapa tablero;
     TipoBarco barcos[MAX_BARCOS];
-    int cantidadBarcos;
     int vidaTotal;
     List *historial;
 } TipoJugador;

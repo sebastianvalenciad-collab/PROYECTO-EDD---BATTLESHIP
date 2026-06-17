@@ -46,7 +46,7 @@ typedef struct{
 // gcc main.c -Werror -o main
 // ./main
 // ctrl + c -> forzar cierre
-
+// 
 //-----------------------------------------------
 //                MAIN
 //-----------------------------------------------
@@ -65,7 +65,7 @@ void print_title () {
 }
 
 int main(){
-
+    // Opciones disponibles
     char option;
     do {
         print_title();

@@ -1,6 +1,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "list.h"
+
 
 #define N 10
 #define MAX_BARCOS 5

@@ -27,6 +27,7 @@ typedef struct{
     int vidaTotal;
     List *historial;
 } TipoJugador;
+
 // --- COMANDOS COMPILACION BASH ---
 // gcc main.c -Werror -o main
 // ./main

@@ -55,9 +55,17 @@ void manejar_error (Status estado, const char *contexto){
     // exit(estado);
 }
 
+// ------------------------------------------------------------------------
+
+// --- Algoritmo deshacer movimiento ---
+// Antes de terminar el turno, se le da la opcion al jugador de 
+// revertir a un turno anterior en caso contrario, el juego sigue
+// con el siguiente turno.
+
 
 /*
-## Función void 'guardar_turno' // Insertar al inicio del loop de juego (modo fácil)
+## Función void 'guardar_turno' 
+// Insertar al final de un turno del loop de juego (modo fácil)
 
 **ENTRADA**
 PILA movimientos, TipoJugador *JUGADOR, TipoJugador *ENEMIGO`
@@ -69,6 +77,7 @@ PILA movimientos, TipoJugador *JUGADOR, TipoJugador *ENEMIGO`
 4. Apilar en PILA movimientos
 
 */
+
 
 void guardar_turno (List * movimientos, const TipoJugador * JUGADOR, const TipoJugador *ENEMIGO){
     // Veridicar la existencia de los datos y la Pila
@@ -88,4 +97,55 @@ void guardar_turno (List * movimientos, const TipoJugador * JUGADOR, const TipoJ
     nuevo_turno->ENEMIGO_TURNO_ACTUAL = ENEMIGO;
     // Apilar puntero en la Pila / lista movimientos
     list_pushBack(movimientos, &nuevo_turno); 
+}
+
+
+/*
+## Función void'deshacer_movimiento' 
+// Llamar si el jugador decide deshacer un turno al final del turno actual
+
+**ENTRADA**
+PILA movimientos 
+**PROCESO**
+1. Verificar que existan turno(s) anterior (Pila no vacía)
+	   1.1 Imprimir "NO EXIXSTEN TURNOS PREVIOS BUCANERO" en caso de pila vacia
+2. Verificar integridad del nodo.
+3. Desapilar top PILA movimientos.
+4. Llamar a función 'remplazar_datos'(Cambia los datos actuales por los del nodo)
+5. Liberar el nodo desapilado
+6. Iniciar siguiente turno para que se reimpriman los datos
+// Creo que es mejor esto a que el jugador decida el mismo la cantidad de turnos a devolverse, ya que asi se puede revisar de forma visual cada turno.
+*/
+
+void deshacer_movimiento (List * movimientos, TipoJugador * JUGADOR, TipoJugador *ENEMIGO){
+    
+    // --- VERIFICACION DE DATOS ---
+    // Verificar integridad de la pila / lista
+    if(!movimientos) {
+        manejar_error(ERR_PUNTERO_NULO, "deshacer_movimiento verificacion inicial de PILA fallida.");
+        return;
+    }
+    
+    // Verificar que existan turnos
+    if (list_size(movimientos) == 0) {
+        puts("NO EXISTEN TURNOS PREVIOS BUCANERO")
+        return;
+    }
+    // --- RECUPERACION TURNO ANTERIOR ---    
+    // Desapilar ultimo turno
+    TipoTurno * turno_anterior = list_popBack(movimientos);
+    
+    // verificar integridad del nodo
+    if (!turno_anterior) {
+        manejar_error(ERR_PUNTERO_NULO, "deshacer_movimiento nodo de TOP invalido.");
+        return;
+    }
+
+    // Se remplazan los datos 
+    remplazar_datos(turno_anterior, JUGADOR, ENEMIGO);
+
+    // Liberar nodo:  Segun yo, pop libera la memoria del nodo, creo....
+        
+    
+    
 }

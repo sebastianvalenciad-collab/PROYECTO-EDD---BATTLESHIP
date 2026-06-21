@@ -61,7 +61,16 @@ void manejar_error (Status estado, const char *contexto){
 // Antes de terminar el turno, se le da la opcion al jugador de 
 // revertir a un turno anterior en caso contrario, el juego sigue
 // con el siguiente turno.
+ 
+// AL final del turno, se le pregunta al jugador
+// si quiere reverir al turno anteriror (solo modo facil), si es positivo,
+// se revierte al inicio del turno anterior, en caso contrario, se guarda el turno 
+// actual y se sigue con el siguiente turno.
 
+// ¡IMPORTANTE! SE ASUME QUE LA ESTRUCTURA TIPO JUGADOR SOLO CONTIENE 
+// DATOS PRIMITIVOS (se realiza una copia superficial en vez de una copia profunda)
+// asi no pasan cosas como memory leaks y se puede asignar de forma directa con la
+// estructura Tipo turno.
 
 /*
 ## Función void 'guardar_turno' 
@@ -96,7 +105,7 @@ void guardar_turno (List * movimientos, const TipoJugador * JUGADOR, const TipoJ
     nuevo_turno->JUGADOR_TURNO_ACTUAL = JUGADOR;
     nuevo_turno->ENEMIGO_TURNO_ACTUAL = ENEMIGO;
     // Apilar puntero en la Pila / lista movimientos
-    list_pushBack(movimientos, &nuevo_turno); 
+    list_pushBack(movimientos, nuevo_turno); 
 }
 
 
@@ -117,6 +126,12 @@ PILA movimientos
 // Creo que es mejor esto a que el jugador decida el mismo la cantidad de turnos a devolverse, ya que asi se puede revisar de forma visual cada turno.
 */
 
+void remplazar_datos (TipoTurno * turno_anterior, TipoJugador * JUGADOR, TipoJugador *ENEMIGO) {
+    // Desreferenciar para modificar la estructura original y usar la variable del turnno anterior
+    *JUGADOR = turno_anterior->JUGADOR_TURNO_ACTUAL;
+    *ENEMIGO = turno_anterior->ENEMIGO_TURNO_ACTUAL;
+}
+
 void deshacer_movimiento (List * movimientos, TipoJugador * JUGADOR, TipoJugador *ENEMIGO){
     
     // --- VERIFICACION DE DATOS ---
@@ -128,7 +143,7 @@ void deshacer_movimiento (List * movimientos, TipoJugador * JUGADOR, TipoJugador
     
     // Verificar que existan turnos
     if (list_size(movimientos) == 0) {
-        puts("NO EXISTEN TURNOS PREVIOS BUCANERO")
+        puts("NO EXISTEN TURNOS PREVIOS BUCANERO");
         return;
     }
     // --- RECUPERACION TURNO ANTERIOR ---    
@@ -145,7 +160,8 @@ void deshacer_movimiento (List * movimientos, TipoJugador * JUGADOR, TipoJugador
     remplazar_datos(turno_anterior, JUGADOR, ENEMIGO);
 
     // Liberar nodo:  Segun yo, pop libera la memoria del nodo, creo....
-        
+    // update: se libera el dato del nodo, pero no el tipo
+    free(turno_anterior);
     
     
 }

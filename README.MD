@@ -26,7 +26,7 @@ El juego maneja tres niveles de dificultad y utiliza estructuras de datos propia
 3. Compila todos los archivos fuente:
 
 ```bash
-gcc main.c funciones.c list.c -o battleship
+gcc main.c funciones.c -Werror -o main
 ```
 4. Ejecuta el programa:
 

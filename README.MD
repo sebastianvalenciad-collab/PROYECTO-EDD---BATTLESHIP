@@ -51,7 +51,7 @@ gcc main.c funciones.c -Werror -o main
 - Detección de victoria cuando todos los barcos enemigos son hundidos.
 - IA en dificultad Fácil y Media (`ia_media`): dispara de forma aleatoria.
 
-### 🔧 En desarrollo / incompleto
+### En desarrollo / incompleto
 
 - **Deshacer movimiento** EN ESPERA..
 - **IA Difícil** modo "cazador" en espera..

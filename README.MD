@@ -114,8 +114,8 @@ El sistema te pedirá ubicar 5 barcos de distintos tamaños (5, 4, 3, 3 y 2 casi
 ```
 
 ### *Paso 5 (Dificultad Facil): Deshacer un movimiento equivocado.
-(Esta funcion aplica solamente si previamente existen movimientos en dificultad facil)
 ---
+(Esta funcion aplica solamente si previamente existen movimientos en dificultad facil)
 
 ## Notas
 

@@ -61,4 +61,7 @@ void restar_vida_barco(TipoJugador *enemigo, int fila, int columna);
 void ia_media(TipoJugador *ia, TipoJugador *jugador);
 void disparo_aleatorio_ia(TipoJugador *ia, TipoJugador *jugador);
 
+void ia_dificil(TipoJugador *ia, TipoJugador *jugador);
+void agregar_vecinos_ia(int fila, int columna, TipoJugador *ia);
+void turno_ia(TipoJugador *ia, TipoJugador *jugador, int dificultad);
 #endif

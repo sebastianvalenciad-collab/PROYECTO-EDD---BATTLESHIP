@@ -142,7 +142,7 @@ void turno_ia(TipoJugador *ia, TipoJugador *jugador, int dificultad)
     else if(dificultad == 3) 
     {
         puts("IA Dificil: modo cazador.");
-           //ia_dificil();
+           ia_dificil(ia, jugador);
     }
 }
 
@@ -213,9 +213,9 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
 
         mostrar_tableros_partida(jugador->tableroAtaques, jugador->tablero);
         
-        puts("=================================");
-        puts("     6     BATTLESHIPS");
-        puts("=================================");
+        puts("==========================================================");
+        puts("                  6     BATTLESHIPS");
+        puts("==========================================================");
         puts("0. Salir al menu principal");
         puts("1. Disparar");
 
@@ -223,9 +223,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
             puts("2. Deshacer movimiento");
         }
 
-        puts("=================================");
-        printf("Seleccione una opcion: ");
-
+        puts("==========================================================");
         char entrada[10];
 
         printf("Seleccione una opcion: ");

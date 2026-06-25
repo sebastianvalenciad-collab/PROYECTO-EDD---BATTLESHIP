@@ -347,3 +347,134 @@ void ia_media(TipoJugador *ia, TipoJugador *jugador)
 {
     disparo_aleatorio_ia(ia, jugador);
 }
+
+// MODO CAZADOR Y CAPTURA
+
+typedef struct {
+    int fila;
+    int columna;
+} CoordenadaIA;
+
+CoordenadaIA candidatos[N * N];
+int cantidadCandidatos = 0;
+int fallosIA = 0;
+
+void agregar_candidato(int fila, int columna, TipoJugador *ia)
+{
+    if(fila < 0 || fila >= N || columna < 0 || columna >= N) return;
+
+    if(ia->tableroAtaques.matriz[fila][columna] != LIBRE) return;
+
+    candidatos[cantidadCandidatos].fila = fila;
+    candidatos[cantidadCandidatos].columna = columna;
+    cantidadCandidatos++;
+}
+
+void agregar_vecinos_ia(int fila, int columna, TipoJugador *ia)
+{
+    agregar_candidato(fila - 1, columna, ia);
+    agregar_candidato(fila + 1, columna, ia);
+    agregar_candidato(fila, columna - 1, ia);
+    agregar_candidato(fila, columna + 1, ia);
+}
+
+void obtener_disparo_cazador(TipoJugador *ia, int *fila, int *columna)
+{
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < N; j++)
+        {
+            if((i + j) % 2 == 0 && ia->tableroAtaques.matriz[i][j] == LIBRE)
+            {
+                *fila = i;
+                *columna = j;
+                return;
+            }
+        }
+    }
+
+    do 
+    {
+        *fila = rand() % N;
+        *columna = rand() % N;
+    } 
+        while(ia->tableroAtaques.matriz[*fila][*columna] != LIBRE);
+}
+
+void obtener_pista_barco(TipoJugador *jugador, TipoJugador *ia, int *fila, int *columna)
+{
+    for(int i = 0; i < MAX_BARCOS; i++)
+    {
+        if(jugador->barcos[i].vida > 0)
+        {
+            for(int j = 0; j < jugador->barcos[i].tamanio; j++)
+            {
+                int f = jugador->barcos[i].posX;
+                int c = jugador->barcos[i].posY;
+
+                if(jugador->barcos[i].orientacion == 'H' || jugador->barcos[i].orientacion == 'h')
+                    c += j;
+                else
+                    f += j;
+
+                if(ia->tableroAtaques.matriz[f][c] == LIBRE)
+                {
+                    *fila = f;
+                    *columna = c;
+                    return;
+                }
+            }
+        }
+    }
+
+    obtener_disparo_cazador(ia, fila, columna);
+}
+
+void ia_dificil(TipoJugador *ia, TipoJugador *jugador)
+{
+    int fila;
+    int columna;
+
+    if(cantidadCandidatos > 0)
+    {
+        cantidadCandidatos--;
+        fila = candidatos[cantidadCandidatos].fila;
+        columna = candidatos[cantidadCandidatos].columna;
+    }
+    else if(fallosIA >= 5)
+    {
+        obtener_pista_barco(jugador, ia, &fila, &columna);
+        fallosIA = 0;
+    }
+    else
+    {
+        obtener_disparo_cazador(ia, &fila, &columna);
+    }
+
+    printf("\nLa IA disparo en: %c %d\n", columna + 'A', fila + 1);
+
+    if(jugador->tablero.matriz[fila][columna] == BARCO)
+    {
+        puts("La IA consiguio un impacto.");
+
+        ia->tableroAtaques.matriz[fila][columna] = IMPACTO;
+        jugador->tablero.matriz[fila][columna] = IMPACTO;
+
+        jugador->vidaTotal--;
+        restar_vida_barco(jugador, fila, columna);
+
+        fallosIA = 0;
+
+        agregar_vecinos_ia(fila, columna, ia);
+    }
+    else
+    {
+        puts("La IA fallo el disparo.");
+
+        ia->tableroAtaques.matriz[fila][columna] = AGUA;
+
+        if(jugador->tablero.matriz[fila][columna] == LIBRE) jugador->tablero.matriz[fila][columna] = AGUA;
+
+        fallosIA++;
+    }
+}

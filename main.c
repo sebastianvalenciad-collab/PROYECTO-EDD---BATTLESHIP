@@ -1,49 +1,12 @@
-
+#include "funciones.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
+#include <time.h>
 
-
-#define N 10
-#define MAX_BARCOS 5
-
-typedef struct Node {
-    int x;
-    int y;
-    int resultado;
-    struct Node *next;
-} Node;
-
-typedef Node* pila;
-
-typedef struct{
-    int matriz[N][N];
-} Mapa;
-
-typedef struct{
-    int ancho;
-    int largo;
-    int posX;
-    int posY;
-    int vida;
-} TipoBarco;
-
-typedef struct{
-    int x;
-    int y;
-    int resultado;
-} Accion;
-
-typedef struct{
-    int id;
-    Mapa tablero;
-    TipoBarco barcos[MAX_BARCOS];
-    int vidaTotal;
-    List *historial;
-} TipoJugador;
 
 // --- COMANDOS COMPILACION BASH ---
-// gcc main.c -Werror -o main
+// gcc main.c funciones.c -Werror -o main
 // ./main
 // ctrl + c -> forzar cierre
 // 
@@ -55,10 +18,12 @@ typedef struct{
 void print_title();
 void iniciar_juego();
 int seleccionar_dificultad();
-void comenzar_partida(int dificultad);
+void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificultad);
+void crear_mapa(Mapa *mapa);
+void inicializar_jugador(TipoJugador *jugador, int id);
 
-
-void print_title() {
+void print_title() 
+{
     puts("=========================================================");
     puts("████   ███  █████ █████ █     █████  ████ █   █ ███ ████");
     puts("█   █ █   █   █     █   █     █     █     █   █  █  █   █");
@@ -72,8 +37,38 @@ void print_title() {
     puts("");
 }
 
-void iniciar_juego() {
+
+void inicializar_jugador(TipoJugador *jugador, int id) 
+{
+    jugador->id = id;
+    jugador->vidaTotal = 0;
+    jugador->historial = NULL;
+
+    crear_mapa(&jugador->tablero);
+    crear_mapa(&jugador->tableroAtaques);
+}
+
+void crear_mapa(Mapa *mapa)
+{
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<N;j++)
+        {
+            mapa->matriz[i][j]=0;
+        }
+    }
+}
+
+
+void iniciar_juego() 
+{
+    TipoJugador jugador;
+    TipoJugador computadora;
+
     int dificultad;
+
+    inicializar_jugador(&jugador,1);
+    inicializar_jugador(&computadora,2);
 
     dificultad = seleccionar_dificultad();
 
@@ -83,7 +78,7 @@ void iniciar_juego() {
     puts("=================================");
 
     
-       //posicionar_barcos();
+    ubicar_barcos_jugador(&jugador);
     
 
     puts("\nTodos los barcos fueron ubicados.");
@@ -94,13 +89,13 @@ void iniciar_juego() {
     system("clear");
     puts("La computadora esta ubicando sus barcos...");
 
-      // posicionar_barcos_bot();
+    ubicar_barcos_ia(&computadora);
 
     puts("Barcos enemigos posicionados.");
     puts("Presione ENTER para continuar...");
     getchar();
 
-    comenzar_partida(dificultad);
+    comenzar_partida(&jugador, &computadora, dificultad);
 }
 
 int seleccionar_dificultad() {
@@ -134,19 +129,15 @@ int seleccionar_dificultad() {
     return dificultad;
 }
 
-void turno_ia(int dificultad) 
+void turno_ia(TipoJugador *ia, TipoJugador *jugador, int dificultad)
 {
-
     if(dificultad == 1) 
     {
-        puts("IA Facil");
-        
-        // ia_facil();
+        ia_media(ia, jugador);
     }
     else if(dificultad == 2) 
     {
-        puts("IA Media");
-          // ia_media();
+        ia_media(ia, jugador);
     }
     else if(dificultad == 3) 
     {
@@ -155,7 +146,64 @@ void turno_ia(int dificultad)
     }
 }
 
-void comenzar_partida(int dificultad) {
+
+void mostrar_tableros_partida(Mapa tableroEnemigo, Mapa tableroPersonal) 
+{
+    puts("=========================================================");
+    puts("==================== TURNO: JUGADOR ====================");
+    puts("=========================================================");
+    puts("        TABLERO ENEMIGO              TABLERO PERSONAL");
+    puts("    A B C D E F G H I J          A B C D E F G H I J");
+
+    for(int i = 0; i < N; i++) 
+    {
+        printf("%2d  ", i + 1);
+
+        for(int j = 0; j < N; j++) 
+        {
+            if(tableroEnemigo.matriz[i][j] == AGUA) 
+            {
+                printf("* ");
+            }
+            else if(tableroEnemigo.matriz[i][j] == IMPACTO) 
+            {
+                printf("X ");
+            }
+            else 
+            {
+                printf("- ");
+            }
+        }
+
+        printf("     %2d  ", i + 1);
+
+        for(int j = 0; j < N; j++) {
+            if(tableroPersonal.matriz[i][j] == BARCO) 
+            {
+                printf("B ");
+            }
+            else if(tableroPersonal.matriz[i][j] == AGUA) 
+            {
+                printf("* ");
+            }
+            else if(tableroPersonal.matriz[i][j] == IMPACTO)
+            {
+                printf("X ");
+            }
+            else 
+            {
+                printf("- ");
+            }
+        }
+
+        printf("\n");
+    }
+
+    puts("==========================================================");
+}
+
+
+void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificultad) {
     int opcion;
     int partidaTerminada = 0;
 
@@ -163,22 +211,36 @@ void comenzar_partida(int dificultad) {
     {
         system("clear");
 
+        mostrar_tableros_partida(jugador->tableroAtaques, jugador->tablero);
+        
         puts("=================================");
         puts("     6     BATTLESHIPS");
         puts("=================================");
         puts("0. Salir al menu principal");
         puts("1. Disparar");
-        puts("2. Mostrar tablero propio");
-        puts("3. Mostrar tablero de ataques");
 
         if(dificultad == 1) {
-            puts("4. Deshacer movimiento");
+            puts("2. Deshacer movimiento");
         }
 
         puts("=================================");
         printf("Seleccione una opcion: ");
 
-        scanf("%d", &opcion);
+        char entrada[10];
+
+        printf("Seleccione una opcion: ");
+        scanf(" %9s", entrada);
+
+        if(entrada[0] < '0' || entrada[0] > '9')
+        {
+            puts("\nOpcion invalida. Debe ingresar un numero.");
+            puts("Presione ENTER para continuar...");
+            getchar();
+            getchar();
+            continue;
+        }
+
+        opcion = entrada[0] - '0';
 
         switch(opcion) {
             case 0:
@@ -187,28 +249,21 @@ void comenzar_partida(int dificultad) {
                 break;
 
             case 1:
-                puts("\n[DISPARAR]");
+                disparar(jugador, computadora);
 
-                  // disparar();
-                puts("\nTURNO IA");
-                turno_ia(dificultad);
+                if(computadora->vidaTotal <= 0)
+                {
+                    puts("\n¡Ganaste la partida!");
+                    partidaTerminada = 1;
+                }
+                else
+                {
+                    puts("\nTURNO IA");
+                    turno_ia(computadora, jugador, dificultad);
+                }
                 break;
 
             case 2:
-                puts("\n[MOSTRAR TABLERO PROPIO]");
-                
-                  // mostrar_tablero();
-                
-                break;
-
-            case 3:
-                puts("\n[MOSTRAR TABLERO DE ATAQUES]");
-
-                //   mostrar_tablero_ataques();
-
-                break;
-
-            case 4:
                 if(dificultad == 1) {
                     puts("\n[DESHACER MOVIMIENTO]");
 
@@ -236,7 +291,8 @@ void comenzar_partida(int dificultad) {
 
 int main() {
     char option;
-
+    srand(time(NULL));
+    
     do {
         print_title();
         scanf(" %c", &option);

@@ -4,15 +4,16 @@
 #include "list.h"
 #include <time.h>
 
+//gcc funciones/*.c tarea3.c -Wno-unused-result -o main
 
 // --- COMANDOS COMPILACION BASH ---
-// gcc main.c funciones.c -Werror -o main
+// gcc funciones/*.c main.c funciones.c -Werror -o main
 // ./main
 // ctrl + c -> forzar cierre
 // 
 //-----------------------------------------------
 //                MAIN
-//-----------------------------------------------
+//-----------------------------------------------S
 
 // FUNCIONES
 void print_title();

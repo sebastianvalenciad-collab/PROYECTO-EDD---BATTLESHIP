@@ -6,6 +6,14 @@
 #include "list.h"
 #include "manejo_errores.h"
 
+typedef struct {
+    int id;
+    Mapa tablero;
+    Mapa tableroAtaques;
+    TipoBarco barcos[MAX_BARCOS];
+    int vidaTotal;
+    pila historial;
+} TipoJugador;
 
 typedef struct {
     TipoJugador JUGADOR_TURNO_ACTUAL;

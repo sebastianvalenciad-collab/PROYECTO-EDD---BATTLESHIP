@@ -10,26 +10,28 @@ El juego maneja tres niveles de dificultad y utiliza estructuras de datos propia
 
 ## Cómo compilar y ejecutar
 
-### Requisitos previos
+Este sistema ha sido desarrollado en lenguaje C y puede ejecutarse fácilmente utilizando **Visual Studio Code** junto con una extensión para C/C++, como **C/C++ Extension Pack** de Microsoft. Para comenzar a trabajar con el sistema en tu equipo local, sigue estos pasos:
 
-- Tener instalado un compilador de C (`gcc`).
-  - En **Linux / macOS**: generalmente ya viene instalado o se instala con `sudo apt install gcc` / `brew install gcc`.
-  - En **Windows**: se recomienda instalar [MinGW](https://www.mingw-w64.org/) o usar el entorno [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
-- Opcionalmente, [Visual Studio Code](https://code.visualstudio.com/) con la extensión **C/C++ Extension Pack** de Microsoft.
+### Requisitos previos:
 
-### Pasos
+- Tener instalado Visual Studio Code.
+- Instalar la extensión **C/C++** (Microsoft).
+- Tener instalado un compilador de C (como **gcc**). Si estás en Windows, se recomienda instalar MinGW o utilizar el entorno WSL.
 
-1. Descarga y descomprime el archivo `.zip` en una carpeta de tu elección.
+### Pasos para compilar y ejecutar:
 
-2. Abre una terminal en esa carpeta (o usa la terminal integrada de VS Code: `Terminal > Nueva terminal`).
-
-3. Compila todos los archivos fuente:
-
+1. **Descarga y descomprime el** archivo `.zip` en una carpeta de tu elección.
+2. **Abre el proyecto en Visual Studio Code**
+    - Inicia Visual Studio Code.
+    - Selecciona `Archivo > Abrir carpeta...` y elige la carpeta donde descomprimiste el proyecto.
+3. **Compila el código**
+    - Abre el archivo principal (por ejemplo, `main.c`).
+    - Abre la terminal integrada (`Terminal > Nueva terminal`).
+    - En la terminal, compila el programa con el siguiente comando (ajusta el nombre si el archivo principal tiene otro nombre):
 ```bash
 gcc main.c funciones.c -Werror -o main
 ```
 4. Ejecuta el programa:
-
 ```bash
 ./main
 ```

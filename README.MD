@@ -2,7 +2,7 @@
 
 ## Descripción
 
-Juego de Battleship (Batalla Naval) implementado en lenguaje C. Este trata de dos jugadores que se enfrentan en un tablero de 10×10: el usuario ubica sus barcos y luego dispara por turnos contra la IA para intentar hundir toda su flota antes de que ella hunda la tuya.
+Juego de Battleship (Batalla Naval) implementado en lenguaje C. Este trata de dos jugadores que se enfrentan en un tablero de 10×10, el usuario ubica sus barcos y luego dispara por turnos contra la IA para intentar hundir toda su flota antes de que ella hunda la tuya.
 
 El juego maneja tres niveles de dificultad y utiliza estructuras de datos propias (listas enlazadas / pila) para el historial de movimientos.
 

@@ -1,4 +1,4 @@
-void inicializar_jugador(TipoJugador *jugador, int id_asignado) {
+void inicializar(TipoJugador *jugador, int id_asignado) {
     if (!jugador){
         manejar_error(ERR_PUNTERO_NULO, "guardar_turno verificacion inicial fallida."); return;
     }
@@ -24,12 +24,12 @@ void inicializar_jugador(TipoJugador *jugador, int id_asignado) {
         jugador->barcos[i].largo = 0;
     }
 }
-void iniciar_partida(TipoJugador *usuario, TipoJugador *bot) {
+void inicializar_jugador(TipoJugador *usuario, TipoJugador *bot) {
     printf("Inicializando sistemas...\n");
 
-    inicializar_jugador(usuario, 1);
+    inicializar(usuario, 1);
 
-    inicializar_jugador(bot, 2);
+    inicializar(bot, 2);
 
     printf("¡Partida inicializada! Jugadores listos para anclar la flota.\n");
 }

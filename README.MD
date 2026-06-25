@@ -49,7 +49,7 @@ gcc main.c funciones.c -Werror -o main
 - Turno automático de la IA tras cada disparo del jugador.
 - Visualización simultánea del tablero enemigo y el tablero propio durante la partida.
 - Detección de victoria cuando todos los barcos enemigos son hundidos.
-- IA en dificultad Fácil y Media (`ia_media`): dispara de forma aleatoria.
+- IA en dificultad Fácil y Media
 
 ### En desarrollo / incompleto
 

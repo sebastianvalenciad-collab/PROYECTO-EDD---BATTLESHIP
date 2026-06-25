@@ -62,10 +62,8 @@ gcc main.c funciones.c -Werror -o main
 
 ### Paso 1: Comenzar partida con la opcion E.
 ```
-=========================================================
-████   ███  █████ █████ █     █████  ████ █   █ ███ ████
 ...
-=========================================================
+=============================================
 PRESIONA E PARA EMPEZAR
 PRESIONA I PARA INSTRUCCIONES
 PRESIONA S PARA SALIR
@@ -103,6 +101,7 @@ El sistema te pedirá ubicar 5 barcos de distintos tamaños (5, 4, 3, 3 y 2 casi
     A B C D E F G H I J          A B C D E F G H I J
  1  * * * * * * * * * *       1  B B B B B * * * * *
  2  * * * * * * * * * *       2  * * * * * * * * * *
+ 3+                           3+
 ...
 =========================================================
 =================================

@@ -55,7 +55,8 @@ gcc include/*.c main.c -Werror -o main
 
 ### Apartados a mejorar
 
-- La IA continua el turno a pesar de que el jugador seleccione una posición inválida.
+- Si se selecciona una posición ya disparada, se pierde el turno, pero la IA sigue el suyo.
+- En caso de salir de la partida, no existe opción de guardar el progreso.
 
 ---
 

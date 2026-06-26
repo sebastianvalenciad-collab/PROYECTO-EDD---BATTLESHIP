@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "funciones.h"
+#include <string.h>
 
 // Prototipo de funciones
 int posicion_valida(int x, int y);
@@ -91,91 +92,130 @@ void mostrar_mapa(Mapa mapa)
     }
 }
 
+
 // permite al jugador ubicar manualmente sus barcos en el tablero
 void ubicar_barcos_jugador(TipoJugador *jugador)
 {
-    
-    int largos[MAX_BARCOS] = {5, 4, 3, 3, 2}; // arreglo con el tamaño de cada barco.
+    int largos[MAX_BARCOS] = {5, 4, 3, 3, 2};
     int fila;
     char columnaLetra;
     int columna;
     char orientacion;
 
-    jugador->vidaTotal = 0; // inicializa la vida total del jugador
+    jugador->vidaTotal = 0;
 
-    // recorre todos los barcos que debe ubicar el jugador
     for(int i = 0; i < MAX_BARCOS; i++)
     {
         int colocado = 0;
 
-        // repite el proceso hasta que el barco sea ubicado de gforma correcta
         while(colocado == 0)
         {
+            char entradaColumna[10];
+            char entradaOrientacion[10];
+
             system("clear");
 
             puts("=================================");
             puts("      UBICACION DE BARCOS");
             puts("=================================");
 
-            // printea el tablero con los barcos ya ubicados
             mostrar_mapa(jugador->tablero);
 
-            // pide la posicion y orientacion del barco
             printf("\nBarco %d de %d | Largo: %d\n", i + 1, MAX_BARCOS, largos[i]);
+
             printf("Ingrese columna inicial A-J: ");
-            scanf(" %c", &columnaLetra);
+            scanf(" %9s", entradaColumna);
 
-            printf("Ingrese fila inicial 1-10: ");
-            scanf("%d", &fila);
+            if(strlen(entradaColumna) != 1)
+            {
+                puts("\nColumna invalida. Debe ingresar solo una letra entre A y J.");
+                puts("Presione ENTER para continuar...");
+                getchar();
+                getchar();
+                continue;
+            }
 
-            printf("Ingrese orientacion H/V: ");
-            scanf(" %c", &orientacion);
+            columnaLetra = entradaColumna[0];
 
-            // convierte la letra ingresada en el indice de la columna
             if(columnaLetra >= 'A' && columnaLetra <= 'J')
-            {
                 columna = columnaLetra - 'A';
-            }
             else if(columnaLetra >= 'a' && columnaLetra <= 'j')
-            {
                 columna = columnaLetra - 'a';
-            }
             else
             {
-                columna = -1;
+                puts("\nColumna invalida. Debe ingresar una letra entre A y J.");
+                puts("Presione ENTER para continuar...");
+                getchar();
+                getchar();
+                continue;
             }
-            fila = fila - 1; // ajusta la fila al indice
 
-            // verifica si el barco se pude ubicar en la posicion solicitada
+            printf("Ingrese fila inicial 1-10: ");
+            if(scanf("%d", &fila) != 1)
+            {
+                puts("\nFila invalida. Debe ingresar un numero entre 1 y 10.");
+
+                while(getchar() != '\n');
+
+                puts("Presione ENTER para continuar...");
+                getchar();
+                continue;
+            }
+
+            printf("Ingrese orientacion H/V: ");
+            scanf(" %9s", entradaOrientacion);
+
+            if(strlen(entradaOrientacion) != 1)
+            {
+                puts("\nOrientacion invalida. Debe ingresar solo H o V.");
+                puts("Presione ENTER para continuar...");
+                getchar();
+                getchar();
+                continue;
+            }
+
+            orientacion = entradaOrientacion[0];
+
+            if(orientacion != 'H' && orientacion != 'h' &&
+               orientacion != 'V' && orientacion != 'v')
+            {
+                puts("\nOrientacion invalida. Debe ingresar H o V.");
+                puts("Presione ENTER para continuar...");
+                getchar();
+                getchar();
+                continue;
+            }
+
+            fila = fila - 1;
+
             if(puede_colocar_barco(&jugador->tablero, fila, columna, largos[i], orientacion))
             {
-                  // coloca el barco en el tablero
-                  colocar_barco(&jugador->tablero, fila, columna, largos[i], orientacion);
+                colocar_barco(&jugador->tablero, fila, columna, largos[i], orientacion);
 
-                  // guarda las dimensiones segun la orientacion
-                  if(orientacion == 'H' || orientacion == 'h')
-                  {
-                      jugador->barcos[i].ancho = largos[i];
-                      jugador->barcos[i].largo = 1;
-                  }
-                  else
-                  {
-                      jugador->barcos[i].ancho = 1;
-                      jugador->barcos[i].largo = largos[i];
-                  }
+                // guarda las dimensiones segun la orientacion
+                if(orientacion == 'H' || orientacion == 'h')
+                {
+                    jugador->barcos[i].ancho = largos[i];
+                    jugador->barcos[i].largo = 1;
+                }
+                else
+                {
+                    jugador->barcos[i].ancho = 1;
+                    jugador->barcos[i].largo = largos[i];
+                }
 
-                  // informacion del abrco
-                  jugador->barcos[i].posX = fila;
-                  jugador->barcos[i].posY = columna;
+                // informacion del abrco
+                jugador->barcos[i].posX = fila;
+                jugador->barcos[i].posY = columna;
 
-                  jugador->barcos[i].vida = largos[i];
-                  jugador->barcos[i].tamanio = largos[i];
+                jugador->barcos[i].vida = largos[i];
+                jugador->barcos[i].tamanio = largos[i];
 
-                  jugador->barcos[i].orientacion = orientacion;
+                jugador->barcos[i].orientacion = orientacion;
 
-                  jugador->vidaTotal += largos[i]; // actualiza la vida total del jugador
+                jugador->vidaTotal += largos[i]; // actualiza la vida total del jugador
 
-                  colocado = 1; // finaliza la ubicacion del barco
+                colocado = 1; // finaliza la ubicacion del barco
             }
             else
             {
@@ -188,6 +228,7 @@ void ubicar_barcos_jugador(TipoJugador *jugador)
         }
     }
 }
+
 
 // ubica automaticamente los barcos de la ia
 void ubicar_barcos_ia(TipoJugador *ia)
@@ -289,11 +330,16 @@ void disparar(TipoJugador *jugador, TipoJugador *enemigo)
     int fila;
     int columna;
 
+
+    puts("\n==========================================================");
+    printf("            ========= TURNO JUGADOR =========\n");
+    puts("==========================================================");
+    
     // pide la coordenada del disparo
     printf("\nIngrese la coordenada donde desea disparar. Ejemplo: A 5\n");
     printf("Disparo: ");
     scanf(" %c %d", &letra, &fila);
-
+    
     // convierte la letra en el indice de la columna
     if(letra >= 'A' && letra <= 'J')
         columna = letra - 'A';
@@ -301,7 +347,7 @@ void disparar(TipoJugador *jugador, TipoJugador *enemigo)
         columna = letra - 'a';
     else
     {
-        puts("Columna invalida.");
+        puts("*** Columna invalida ***");
         return;
     }
 
@@ -310,7 +356,7 @@ void disparar(TipoJugador *jugador, TipoJugador *enemigo)
     // verifica que la coord pertenezca al tablero
     if(fila < 0 || fila >= N || columna < 0 || columna >= N)
     {
-        puts("Coordenada fuera del tablero.");
+        puts("*** Coordenada fuera del tablero ***");
         return;
     }
 
@@ -318,7 +364,7 @@ void disparar(TipoJugador *jugador, TipoJugador *enemigo)
     if(jugador->tableroAtaques.matriz[fila][columna] == AGUA ||
        jugador->tableroAtaques.matriz[fila][columna] == IMPACTO)
     {
-        puts("Ya disparaste en esa posicion.");
+        puts("Ya disparaste en esa posicion!");
         return;
     }
 
@@ -337,7 +383,7 @@ void disparar(TipoJugador *jugador, TipoJugador *enemigo)
     }
     else
     {
-        puts("\nAgua.");
+        puts("\n*** Agua ***.");
 
         // registra el disparo como agua en el tablero
         jugador->tableroAtaques.matriz[fila][columna] = AGUA;

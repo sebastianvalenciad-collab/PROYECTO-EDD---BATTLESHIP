@@ -17,7 +17,7 @@ PILA movimientos, TipoJugador *JUGADOR, TipoJugador *ENEMIGO`
 */
 
 
-void guardar_turno (List * movimientos, const TipoJugador * JUGADOR, const TipoJugador *ENEMIGO){
+void guardar_turno (List * movimientos, TipoJugador * JUGADOR, TipoJugador *ENEMIGO){
     // Veridicar la existencia de los datos y la Pila
     if (!movimientos || !JUGADOR || !ENEMIGO) {
         manejar_error(ERR_PUNTERO_NULO, "guardar_turno verificacion inicial fallida.");
@@ -31,10 +31,12 @@ void guardar_turno (List * movimientos, const TipoJugador * JUGADOR, const TipoJ
         return;
     }
     // Asignacion / copia del turno actual en el nodo
-    nuevo_turno->JUGADOR_TURNO_ACTUAL = JUGADOR;
-    nuevo_turno->ENEMIGO_TURNO_ACTUAL = ENEMIGO;
+    // Se agrega el '*' para desreferenciar los punteros y copiar el valor
+    nuevo_turno->JUGADOR_TURNO_ACTUAL = *JUGADOR;
+    nuevo_turno->ENEMIGO_TURNO_ACTUAL = *ENEMIGO;
     // Apilar puntero en la Pila / lista movimientos
     list_pushBack(movimientos, nuevo_turno); 
+    
 }
 
 
@@ -65,7 +67,7 @@ void deshacer_movimiento (List * movimientos, TipoJugador * JUGADOR, TipoJugador
     
     // --- VERIFICACION DE DATOS ---
     // Verificar integridad de la pila / lista
-    if(!movimientos) {
+    if(!movimientos || !JUGADOR || !ENEMIGO) {
         manejar_error(ERR_PUNTERO_NULO, "deshacer_movimiento verificacion inicial de PILA fallida.");
         return;
     }

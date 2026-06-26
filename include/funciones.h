@@ -44,7 +44,6 @@ typedef struct {
     Mapa tableroAtaques;
     TipoBarco barcos[MAX_BARCOS];
     int vidaTotal;
-    pila historial;
 } TipoJugador;
 
 void crear_mapa(Mapa *mapa);

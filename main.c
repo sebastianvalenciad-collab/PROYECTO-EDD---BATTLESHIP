@@ -1,13 +1,12 @@
-#include "funciones.h"
+#include "include/funciones.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "list.h"
+#include "include/list.h"
 #include <time.h>
-
-//gcc funciones/*.c tarea3.c -Wno-unused-result -o main
+#include "include/des_turno.h"
 
 // --- COMANDOS COMPILACION BASH ---
-// gcc funciones/*.c main.c funciones.c -Werror -o main
+// gcc include/*.c main.c -Werror -o main
 // ./main
 // ctrl + c -> forzar cierre
 // 
@@ -43,7 +42,6 @@ void inicializar_jugador(TipoJugador *jugador, int id)
 {
     jugador->id = id;
     jugador->vidaTotal = 0;
-    jugador->historial = NULL;
 
     crear_mapa(&jugador->tablero);
     crear_mapa(&jugador->tableroAtaques);
@@ -207,6 +205,8 @@ void mostrar_tableros_partida(Mapa tableroEnemigo, Mapa tableroPersonal)
 void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificultad) {
     int opcion;
     int partidaTerminada = 0;
+    List * pila_movimiento = NULL;
+    pila_movimiento = list_create();
 
     while(partidaTerminada != 1) 
     {
@@ -248,6 +248,10 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
                 break;
 
             case 1:
+                if(dificultad == 1) {
+                    guardar_turno(pila_movimiento, jugador, computadora);
+                }
+
                 disparar(jugador, computadora);
 
                 if(computadora->vidaTotal <= 0)
@@ -266,7 +270,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
                 if(dificultad == 1) {
                     puts("\n[DESHACER MOVIMIENTO]");
 
-                    //   deshacer_movimiento();
+                    deshacer_movimiento(pila_movimiento, jugador,  computadora);
 
                 } else {
                     puts("\nOpcion invalida.");
@@ -283,6 +287,11 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
             getchar();
             getchar();
         }
+    }
+    if (pila_movimiento != NULL) {
+        // Asumiendo que list_clean vacía los nodos y free destruye el puntero de la lista
+        list_clean(pila_movimiento); 
+        free(pila_movimiento);
     }
 }
 

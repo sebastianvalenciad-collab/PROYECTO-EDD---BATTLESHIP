@@ -53,10 +53,9 @@ gcc include/*.c main.c -Werror -o main
 - Detección de victoria cuando todos los barcos enemigos son hundidos.
 - IA en dificultad Fácil y Media
 
-### En desarrollo / incompleto
+### Apartados a mejorar
 
-- **Deshacer movimiento** EN ESPERA..
-- **IA Difícil** modo "cazador" en espera..
+- La IA continua el turno a pesar de que el jugador seleccione una posición inválida.
 
 ---
 

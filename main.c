@@ -5,10 +5,10 @@
 #include <time.h>
 #include "include/des_turno.h"
 
-// --- COMANDOS COMPILACION BASH ---
+// --- COMANDOS COMPILACIÓN BASH ---
 // gcc include/*.c main.c -Werror -o main
 // ./main
-// ctrl + c -> forzar cierre
+// ctrl + c -> Forzar 
 // 
 //-----------------------------------------------
 //                MAIN
@@ -22,7 +22,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
 void crear_mapa(Mapa *mapa);
 void inicializar_jugador(TipoJugador *jugador, int id);
 
-// Inicio del juego, es lo primero que se ve al inciiar el juego.
+// Inicio del juego, es lo primero que se ve al iniciar el juego.
 void print_title() 
 {
     puts("=========================================================");
@@ -39,42 +39,42 @@ void print_title()
 }
 
 
-// inicializa la estructura de un jugador al comenzar la partida
+// Inicializa la estructura de un jugador al comenzar la partida
 void inicializar_jugador(TipoJugador *jugador, int id) 
 {
     jugador->id = id; // asigna el id
     jugador->vidaTotal = 0; // asigna la vida total
 
-    crear_mapa(&jugador->tablero); // iniciaiza la vida total del jugad
-    crear_mapa(&jugador->tableroAtaques); // inicializa el tablero donde se registran los ataques realizados
+    crear_mapa(&jugador->tablero); // Inicializa la vida total del jugador
+    crear_mapa(&jugador->tableroAtaques); // Inicializa el tablero donde se registran los ataques realizados
 }
 
-// inicializa tablero de juego, el cual es una matriz
+// Inicializa tablero de juego, el cual es una matriz
 void crear_mapa(Mapa *mapa)
 {
-    for(int i=0;i<N;i++) // recorre las filas
+    for(int i=0;i<N;i++) // Recorre las filas
     {
-        for(int j=0;j<N;j++) // recorre las columnas de la fila actual
+        for(int j=0;j<N;j++) // Recorre las columnas de la fila 
         {
-            mapa->matriz[i][j]=0; // incializa  la casilla como libre
+            mapa->matriz[i][j]=0; // Inicializa la casilla como libre
         }
     }
 }
 
-// incializa una nueva partida del juego
+// Inicializa una nueva partida del juego
 void iniciar_juego() 
 {
-    // estrusturas del jugador y la computadora IA
+    // Estructuras del jugador y la computadora IA
     TipoJugador jugador;
     TipoJugador computadora;
 
     int dificultad;
 
-    // inicializa los jugadores jugador y computadora y sus tableros
+    // Inicializa los jugadores jugador y computadora y sus tableros
     inicializar_jugador(&jugador,1);
     inicializar_jugador(&computadora,2);
 
-    // selecciona la dificultad de la partida
+    // Selecciona la dificultad de la partida
     dificultad = seleccionar_dificultad();
 
     system("clear");
@@ -82,7 +82,7 @@ void iniciar_juego()
     puts("      UBICACION DE BARCOS");
     puts("=================================");
 
-    // el jugador ubica sus barcos
+    // El jugador ubica sus barcos
     ubicar_barcos_jugador(&jugador);
     
 
@@ -94,22 +94,22 @@ void iniciar_juego()
     system("clear");
     puts("La computadora esta ubicando sus barcos...");
 
-    // la ia ubica sus barcos
+    // La IA ubica sus barcos
     ubicar_barcos_ia(&computadora);
 
     puts("Barcos enemigos posicionados.");
     puts("Presione ENTER para continuar...");
     getchar();
 
-    // comienza la partida
+    // Comienza la partida
     comenzar_partida(&jugador, &computadora, dificultad);
 }
 
-// funcion que permite al jugadro seleccionar la difucultad de la partida
+// Función que permite al jugador seleccionar la dificultad de la partida
 int seleccionar_dificultad() {
     int dificultad;
 
-    do // se repite el ciclo hasta qyue se ingrese una dificultad valida
+    do // Se repite el ciclo hasta que se ingrese una dificultad válida
     {
         system("clear");
 
@@ -124,7 +124,7 @@ int seleccionar_dificultad() {
 
         scanf("%d", &dificultad); // lee la dificultad
 
-        if(dificultad < 1 || dificultad > 3) // verifica que sea una opcion valida
+        if(dificultad < 1 || dificultad > 3) // Verifica que sea una opción válida
         {
             puts("Opcion invalida.");
             puts("Presione ENTER para intentar nuevamente...");
@@ -134,42 +134,42 @@ int seleccionar_dificultad() {
 
     } while(dificultad < 1 || dificultad > 3);
 
-    return dificultad; // retorna la dificultad
+    return dificultad; // Retorna la dificultad
 }
 
-// funcion que ejecuta el turno de la ia segun la dificultad que se selecciona
+// Función que ejecuta el turno de la IA según la dificultad que se selecciona
 void turno_ia(TipoJugador *ia, TipoJugador *jugador, int dificultad)
 {
-    if(dificultad == 1)  // IA faci
+    if(dificultad == 1)  // IA fácil
     {
         ia_media(ia, jugador);
     }
-    else if(dificultad == 2) // ia media
+    else if(dificultad == 2) // IA media
     {
         ia_media(ia, jugador);
     }
-    else if(dificultad == 3) // ia dificil modo cazador y captura
+    else if(dificultad == 3) // IA difícil modo cazador y captura
     {
         puts("IA Dificil: modo cazador.");
            ia_dificil(ia, jugador);
     }
 }
 
-// funcionm que muestra los taberos del jugador y del enemigo durante la partida
+// Función que muestra los tableros del jugador y del enemigo durante la partida
 void mostrar_tableros_partida(Mapa tableroEnemigo, Mapa tableroPersonal) 
 {
-    // encabezado de los taberos
+    // Encabezado de los tableros
     puts("=========================================================");
     puts("=================== TABLERO DE JUEGO ====================");
     puts("=========================================================");
     puts("        TABLERO ENEMIGO              TABLERO PERSONAL");
     puts("    A B C D E F G H I J          A B C D E F G H I J");
 
-    for(int i = 0; i < N; i++) // recorre todas las filas del tablero
+    for(int i = 0; i < N; i++) // Recorre todas las filas del tablero
     {
         printf("%2d  ", i + 1);
 
-        // muestra el tabnlero de ataques del jugador
+        // Muestra el tablero de ataques del jugador
         for(int j = 0; j < N; j++) 
         {
             if(tableroEnemigo.matriz[i][j] == AGUA) 
@@ -188,7 +188,7 @@ void mostrar_tableros_partida(Mapa tableroEnemigo, Mapa tableroPersonal)
 
         printf("     %2d  ", i + 1);
 
-        // muesta el tablero personal del jugador
+        // Muestra el tablero personal del jugador
         for(int j = 0; j < N; j++) {
             if(tableroPersonal.matriz[i][j] == BARCO) 
             {
@@ -214,7 +214,7 @@ void mostrar_tableros_partida(Mapa tableroEnemigo, Mapa tableroPersonal)
     puts("==========================================================");
 }
 
-// funcion que controla el ciclo principal del juego
+// Función que controla el ciclo principal del juego
 void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificultad) {
     int opcion;
     int partidaTerminada = 0;
@@ -225,7 +225,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
     {
         system("clear");
 
-        mostrar_tableros_partida(jugador->tableroAtaques, jugador->tablero); // muestra los tableros
+        mostrar_tableros_partida(jugador->tableroAtaques, jugador->tablero); // Muestra los tableros
         
         puts("==========================================================");
         puts("                       BATTLESHIPS");
@@ -240,11 +240,11 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
         puts("==========================================================");
         char entrada[10];
 
-        // solicita al jugador una opcion
+        // Solicita al jugador una opción
         printf("Seleccione una opcion: ");
         scanf(" %9s", entrada);
 
-        if(entrada[0] < '0' || entrada[0] > '9') // verifica si la opcion es valida
+        if(entrada[0] < '0' || entrada[0] > '9') // Verifica si la opción es válida
         {
             puts("\nOpcion invalida. Debe ingresar un numero.");
             puts("Presione ENTER para continuar...");
@@ -255,25 +255,25 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
 
         opcion = entrada[0] - '0';
 
-        switch(opcion) { // opciones de juego
+        switch(opcion) { // Opciones de juego
             case 0: // finalizar el juego
                 puts("\nSaliendo de la partida.");
                 partidaTerminada = 1;
                 break;
 
-            case 1: // turno del jugador
+            case 1: // Turno del jugador
                 if(dificultad == 1) { // em modo facil se activa el guardar turno
                     guardar_turno(pila_movimiento, jugador, computadora);
                 }
 
-                disparar(jugador, computadora); // realiza un disparo el jugador
+                disparar(jugador, computadora); // Realiza un disparo el jugador
 
-                if(computadora->vidaTotal <= 0) // verifica si el jugador gana
+                if(computadora->vidaTotal <= 0) // Verifica si el jugador gana
                 {
                     puts("\n¡Ganaste la partida!");
                     partidaTerminada = 1;
                 }
-                else // turno de la IA
+                else // Turno de la IA
                 {
                     puts("\n==========================================================");
                     printf("               ========= TURNO IA =========\n");
@@ -282,7 +282,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
                 }
                 break;
 
-            case 2: // Deshace el ultimo movimiento, opcion disponible solo en el modo facil
+            case 2: // Deshace el último movimiento, opción disponible solo en el modo fácil
                 if(dificultad == 1) {
                     puts("\n[DESHACER MOVIMIENTO]");
 
@@ -293,18 +293,18 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
                 }
                 break;
 
-            default: // manejo de opciones no validas
+            default: // Manejo de opciones no válidas
                 puts("\nOpcion invalida.");
                 break;
         }
 
-        if(!partidaTerminada) { // espera antes de actualizar la pantalla
+        if(!partidaTerminada) { // Espera antes de actualizar la pantalla
             puts("\nPresione ENTER para continuar...");
             getchar();
             getchar();
         }
     }
-    // libera la memoria utilizada por el historial
+    // Libera la memoria utilizada por el historial
     if (pila_movimiento != NULL) {
         // Asumiendo que list_clean vacía los nodos y free destruye el puntero de la lista
         list_clean(pila_movimiento); 
@@ -316,20 +316,20 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
 // main del juego
 int main() {
     char option;
-    srand(time(NULL)); // inicializa generar posiciones aleatorias de la ia
+    srand(time(NULL)); // Inicializa generar posiciones aleatorias de la IA
     
-    do { // muestra el menu principal hasta que el usuario decida salir
+    do { // Muestra el menú principal hasta que el usuario decida salir
         print_title();
-        scanf(" %c", &option); // opcion que selecciona el jugador
+        scanf(" %c", &option); // Opción que selecciona el jugador
 
         switch(option) {
-            case 'E': // inicia una nueva partida
+            case 'E': // Inicia una nueva partida
             case 'e':
                 system("clear");
                 iniciar_juego();
                 break;
 
-            case 'I': // instrucciones del juego
+            case 'I': // Instrucciones del juego
             case 'i':
                 system("clear");
                 puts("=========== INSTRUCCIONES ===========");
@@ -340,7 +340,7 @@ int main() {
                 puts("=====================================");
                 break;
 
-            case 'S': // salir del juego
+            case 'S': // Salir del juego
             case 's':
                 puts("Saliendo del juego...");
                 break;

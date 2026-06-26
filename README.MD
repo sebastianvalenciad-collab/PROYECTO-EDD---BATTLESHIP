@@ -29,7 +29,7 @@ Este sistema ha sido desarrollado en lenguaje C y puede ejecutarse fácilmente u
     - Abre la terminal integrada (`Terminal > Nueva terminal`).
     - En la terminal, compila el programa con el siguiente comando (ajusta el nombre si el archivo principal tiene otro nombre):
 ```bash
-gcc main.c funciones.c -Werror -o main
+gcc include/*.c main.c -Werror -o main
 ```
 4. Ejecuta el programa:
 ```bash

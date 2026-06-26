@@ -215,7 +215,7 @@ void comenzar_partida(TipoJugador *jugador, TipoJugador *computadora, int dificu
         mostrar_tableros_partida(jugador->tableroAtaques, jugador->tablero);
         
         puts("==========================================================");
-        puts("                  6     BATTLESHIPS");
+        puts("                       BATTLESHIPS");
         puts("==========================================================");
         puts("0. Salir al menu principal");
         puts("1. Disparar");
